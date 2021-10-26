@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="Description" content="Ktupad MVC Framework by wawan sismadi">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<meta http-equiv="Cache-Control" content="public" max-age="31536000">
+
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="stylesheet" type="text/css" href="pagination.css" async>
+<title>ktupad</title>
+<style>
+body {background-color: #2e597b;  margin:0 auto;  color: #000;  padding: 60px 10px 10px 10px;}
+input {box-sizing:border-box;width:100%;padding:10px;border:1px solid #ccc; }
+button{ background-image: linear-gradient(#4da2be, #004761); color:white;
+background:#072d3a; padding:12px 20px; border:none; border-radius:4px; cursor:pointer; margin:2px; }
+.page{ margin:0 auto;  width: 80%; background-color: #f2f2f2; padding: 20px 20px}
+</style>
+</head>
+<body>
+<div class="page">
+<div id="table"></div>
+<div id="form"></div>
+</div>
+<script>
+app={
+gebi:function(i){ return  document.getElementById(i);},
+data:[
+{id:'1', nama:'satu', hp:'087885073237'},
+{id:'2', nama:'dua', hp:'081231237896'}
+],
+
+create:function (x) { console.log(x);
+frm = this.edit();
+data=this.data;
+data.push(frm);
+this.table();
+},
+
+read:function (x) {	console.log(x)
+this.form(x);
+},
+
+update:function (x) {	console.log(x)
+frm=this.edit();
+data=this.data;
+data.splice(x, 1, frm);
+this.table();
+},
+
+delete:function (x) {	console.log(x)
+data=this.data;
+data.splice(x, 1);
+this.table();
+},
+
+table:function() {
+data=this.data;
+col=data[0];
+if(data.lenght==0){ data={"Kosong":""} }
+out  = '<H2>Data</H2><table id="table"><thead><tr><td>Edit</td>';
+for (key in col) { out += '<td>'+ key +'</td>'; }
+out += '</tr></thead> <tbody>';
+for (key in data) { col=data[key];
+out += '<tr><td><button onClick="app.read(\''+key+'\');" > Read</button></td>';
+for (i in col) {out += '<td>'+ col[i] +'</td>';	}
+out += '</tr>';}
+out += ' </tbody></table> <br/>';
+this.gebi('table').innerHTML=out;
+},
+
+form:function(x) {
+data=this.data;
+col = data[x];
+out  = '<form id="myForm">';
+for (key in col) {
+out += '<div id="f-'+key+'"><label>'+key+'</label><br/><input type="text" id="'+key+'" name="'+key+'" value="'+col[key]+'"></div> ';
+}
+out += '</form><br/>';
+out += '<button onClick="app.create(\''+x+'\');">Create</button>';
+out += '<button onClick="app.update(\''+x+'\');">Update</button>';
+out += '<button onClick="app.delete(\''+x+'\');">Delete</button>';
+this.gebi('form').innerHTML=out;
+},
+
+edit:function () {
+frm = this.gebi('myForm');
+obj={};
+for ( var i = 0; i < frm.elements.length; i++ ) { e = frm.elements[i];
+obj[e['name']] = e['value'];
+}
+return obj;
+},
+}
+app.table();
+</script>
+</body>
+</html>
